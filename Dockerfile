@@ -1,7 +1,7 @@
 # Build Ngind in a stock Go builder container
 FROM golang:1.11-alpine as builder
 
-RUN apk add --no-cache make gcc musl-dev git
+RUN apk add --no-cache make gcc musl-dev git linux-headers
 
 ADD . /ngind
 RUN cd /ngind && make static
@@ -10,7 +10,7 @@ RUN cd /ngind && make static
 FROM alpine:latest
 
 RUN apk add --no-cache ca-certificates
-COPY --from=builder /ngind/build/bin/ngind /usr/local/bin/
+COPY --from=builder /ngind/bin/ngind /usr/local/bin/
 
 EXPOSE 52520 52521 52522
 CMD ["ngind"]
