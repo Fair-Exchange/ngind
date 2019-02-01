@@ -1,16 +1,9 @@
-# Build Ngind in a stock Go builder container
-FROM golang:1.11-alpine as builder
+FROM golang:1.11-alpine
 
-RUN apk add --no-cache make gcc musl-dev git linux-headers
-
-ADD . /ngind
-RUN cd /ngind && make
-
-# Pull Ngind into a second stage deploy alpine container
-FROM alpine:latest
-
-RUN apk add --no-cache ca-certificates
-COPY --from=builder /ngind/bin/ngind /usr/local/bin/
+RUN apk add --no-cache git make gcc musl-dev linux-headers
+RUN git clone https://github.com/Fair-Exchange/ngind /ngind
+RUN cd /ngind && make release
 
 EXPOSE 52520 52521 52522
-CMD ["ngind"]
+
+ENTRYPOINT ["/ngind/bin/ngind"]
