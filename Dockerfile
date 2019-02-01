@@ -10,7 +10,7 @@ RUN cd /ngind && make static
 FROM alpine:latest
 
 RUN apk add --no-cache ca-certificates
-COPY --from=builder /ngind/bin/ngind /usr/local/bin/
+COPY --from=builder /ngind/build/bin/ngind /usr/local/bin/
 
 EXPOSE 52520 52521 52522
 CMD ["ngind"]
