@@ -4,7 +4,7 @@ FROM golang:1.11-alpine as builder
 RUN apk add --no-cache make gcc musl-dev git linux-headers
 
 ADD . /ngind
-RUN cd /ngind && make static
+RUN cd /ngind && make release
 
 # Pull Ngind into a second stage deploy alpine container
 FROM alpine:latest
